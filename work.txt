@@ -1,0 +1,74 @@
+
+
+You could use cursor.lastrowid (see "Optional DB API Extensions"):
+
+connection=sqlite3.connect(':memory:')
+cursor=connection.cursor()
+cursor.execute('''CREATE TABLE foo (id integer primary key autoincrement ,
+                                    username varchar(50),
+                                    password varchar(50))''')
+cursor.execute('INSERT INTO foo (username,password) VALUES (?,?)',
+               ('test','test'))
+print(cursor.lastrowid)
+# 1
+
+
+
+
+INSERT_POLL_RETURN_ID = "INSERT INTO polls (title, owner_username) VALUES (%s, %s) RETURNING id;"
+INSERT_OPTION = "INSERT INTO options (option_text, poll_id) VALUES %s;"
+
+def create_poll_alt(connection, title, owner, options):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(INSERT_POLL_RETURN_ID, (title, owner,))
+            cursor.execute("SELECT id FROM polls ORDER BY id DESC LIMIT 1;")
+
+            poll_id = cursor.fetchone()[0]
+            option_values = [(option_text, poll_id) for option_text in options]
+
+            for option_value in option_values:
+                cursor.execute(INSERT_OPTION, (option_value,))  # option_value ist Tupel
+
+
+
+        filename1 = pathlib.Path(item).stem
+        filename2 = pathlib.Path(item).name
+        print(f"filename1: {filename1}")
+        print(f"filename2: {filename2}")
+        print(os.path.basename(filename1))
+        basename = os.path.splitext(os.path.basename(filename1))[0]
+        print(f"basename: {basename}")
+        print(f"pathlib.Path(item): {pathlib.Path(item)}")
+        print(f"os.path.basename(item).split('.')[0]: {os.path.basename(item).split('.')[0]}")
+        print(f"pathlib.Path(item).suffix: {pathlib.Path(item).suffix[1:]}")
+        print(f"item.stat(): {item.stat()}")
+        print(f"timestamp: {item.stat().st_mtime}")
+        print(f"item.stat().st_size): {item.stat().st_size}")
+
+
+
+
+        #date_time = datetime.fromtimestamp(item.stat().st_ctime)
+        #d = date_time.strftime("%m/%d/%Y, %H:%M:%S")
+        dt = datetime.fromtimestamp(item.stat().st_mtime )
+        str_date_time = dt.strftime("%d.%m.%Y, %H:%M:%S")
+        print(f"The date and time is: {str_date_time}")
+
+        #my_ctime = datetime.datetime.strptime(item.stat().st_ctime , "%d.%m.%Y")
+
+
+def create_poll_alt(connection, title, owner, options):
+    print(options)
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(INSERT_POLL_RETURN_ID, (title, owner,))
+            cursor.execute("SELECT id FROM polls ORDER BY id DESC LIMIT 1;")
+            poll_id = cursor.fetchone()[0]
+
+            option_values = [(option_text, poll_id) for option_text in options]
+            print(type(option_values))      # => Liste von Tupel
+            print(option_values)
+
+            for option_value in option_values:
+                cursor.execute(INSERT_OPTION, (option_value,))  # option_value ist Tupel
