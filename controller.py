@@ -1,7 +1,6 @@
 import pathlib
-from datetime import datetime
 import sys
-import os
+from datetime import datetime
 
 import database_sqlite
 import database
@@ -10,7 +9,8 @@ database.create_tables()
 database_sqlite.create_tables()
 
 chronicle_dir = "C:\Daten\Desktop_20190912"
-#chronicle_dir = "C:\Daten\Chronik_20221202"
+# chronicle_dir = "C:\Daten\Chronik_20221202"
+chronicle_dir = r"C:\Daten\Chronik\Chronik"
 chronik = pathlib.Path(chronicle_dir)
 
 list1 = []
